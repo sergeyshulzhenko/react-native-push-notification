@@ -1,7 +1,9 @@
 package com.dieam.reactnativepushnotification.modules;
 
 import android.app.IntentService;
+import android.app.Notification;
 import android.content.Intent;
+import android.os.Build;
 import android.util.Log;
 
 import com.google.android.gms.gcm.GoogleCloudMessaging;
@@ -15,6 +17,14 @@ public class RNPushNotificationRegistrationService extends IntentService {
 
     public RNPushNotificationRegistrationService() {
         super(TAG);
+    }
+
+    @Override
+    public void onCreate() {
+        super.onCreate();
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            startForeground(1, new Notification());
+        }
     }
 
     @Override

@@ -7,7 +7,9 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.os.Build;
 import android.os.Bundle;
+import android.support.v4.content.ContextCompat;
 
 import com.dieam.reactnativepushnotification.helpers.ApplicationBadgeHelper;
 import com.facebook.react.bridge.ActivityEventListener;
@@ -112,7 +114,12 @@ public class RNPushNotification extends ReactContextBaseJavaModule implements Ac
         Intent GCMService = new Intent(reactContext, RNPushNotificationRegistrationService.class);
 
         GCMService.putExtra("senderID", senderID);
-        reactContext.startService(GCMService);
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            ContextCompat.startForegroundService(reactContext, GCMService);
+        } else {
+            reactContext.startService(GCMService);
+        }
     }
 
     @ReactMethod
